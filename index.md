@@ -6,7 +6,11 @@ nav_order: 1
 
 # Pythia Documentation
 
-## Requirements
+![Pythia](img/pythia-400.png)
+
+## Introduction
+
+Pythia is a minimalist, yet highly-specialized text search engine designed with very specific requirements.
 
 The Pythia project was primarily created to deal with the problem of providing a flexible search engine for literary texts, where **metadata** is huge, its sources are different, and its alignments with the underlying text dramatically varies at all analysis levels, even beyond the boundaries of language analysis.
 
