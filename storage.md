@@ -7,6 +7,14 @@ nav_order: 3
 
 # Storage
 
+- [Storage](#storage)
+  - [Documents](#documents)
+  - [Corpora](#corpora)
+  - [Spans](#spans)
+  - [Words and Lemmata](#words-and-lemmata)
+    - [Building Word Index](#building-word-index)
+  - [Managing Data](#managing-data)
+
 The Pythia index has a simple architecture, focused around a few entities.
 
 ![schema](img/db-schema.png)
@@ -127,3 +135,25 @@ Once we have words, lemmata data is calculated as follows:
     ```
 
 Lemma index is built from the word index, by grouping word index rows based on their `lemma_id`.
+
+## Managing Data
+
+Here are some useful commands to manage Pythia PostgreSQL databases.
+
+- **backup** database:
+
+```bash
+pg_dump --username=postgres -f c:/users/dfusi/desktop/dump.sql pythia
+```
+
+- **restore** database from a dump like the above (first you must _create_ the database):
+
+```bash
+psql -U postgres -d pythia -f c:/users/dfusi/desktop/dump.sql
+```
+
+- **bulk write** for API:
+
+```bash
+./pythia bulk-write c:/users/dfusi/desktop/dump
+```
