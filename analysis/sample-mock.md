@@ -1,3 +1,9 @@
+---
+title: Mock Example
+layout: default
+parent: Analysis
+nav_order: 4
+---
 
 # Mock Example
 
