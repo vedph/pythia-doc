@@ -131,6 +131,8 @@ Location operators are:
 
 - ▶️ `NEAR(n,m,s)`: filters the left expression so that it must be _near_, i.e. at the specified distance (ranging from a minimum -`n`- to a maximum -`m`-) from the second one, either before or after it. For instance, here word `A` and `B` are at distance 0 in `AB` or `BA`; at distance 1 in `AXB` or `BXA`; etc.
 
+![near](img/locop-near.png)
+
 | 1 | 2 | 3 |
 |---|---|---|
 | A | B |   |
@@ -140,12 +142,16 @@ Location operators are:
 
 - ▶️ `BEFORE(n,m,s)`: filters the left expression so that it must be _before_ the second one, at the specified distance from it. For instance, word `A` is before `B` at distance 0 (i.e. `B` immediately follows `A`) in `AB`, and at distance 1 in `AXB`:
 
+![before](img/locop-before.png)
+
 | 1 | 2 | 3 |
 |---|---|---|
 | A | B |   |
 | A | X | B |
 
 - ▶️ `AFTER(n,m,s)` filters the first expression so that it must be _after_ the second one, at the specified distance from it. This operator mirrors `BEFORE`. For instance, word `B` is after `A` at distance 0 (i.e. `B` immediately follows `A`) in `AB`, and at distance 1 in `AXB`:
+
+![after](img/locop-after.png)
 
 | 1 | 2 | 3 |
 |---|---|---|
@@ -154,13 +160,16 @@ Location operators are:
 
 - ▶️ `INSIDE(ns,ms,ne,me,s)`: filters the first expression so that it must be _inside_ the span defined by the second one, optionally at the specified distance from the container start or end. For instance, here `A` is inside `BBBB`, at a distance of 2 from its start, and of 1 from its end:
 
+![inside](img/locop-inside.png)
+
 | 1 | 2 | 3 | 4 |
 |---|---|---|---|
 |   |   | A |   |
 | B | B | B | B |
 
-
 - ▶️ `OVERLAPS(n,m,s)`: filters the first expression so that its span must overlap the one defined by the second expression, optionally by the specified amount of positions. Here `n` represents the minimum required overlap, and `m` the maximum allowed overlap.For example, both these are cases of overlap of a structure `A` with a structure `B`; in the first one, the overlap extent is 2; in the second, it's 1:
+
+![overlaps](img/locop-overlaps.png)
 
 | 1 | 2 | 3 | 4 | 5 |
 |---|---|---|---|---|
@@ -174,6 +183,8 @@ Location operators are:
 
 - ▶️ `LALIGN(n,m,s)`: filters the first expression so that its span must _left-align_ with the one defined by the second expression: `A` can start with or after `B`, but not before `B`. Here, `n` and `m` specify the minimum and maximum offsets from start. For instance, in the first example `AAA` is left-aligned with `BBB` with offset=0 (i.e. they are perfectly aligned), while in the second one `AA` is offset by 1.
 
+![lalign](img/locop-lalign.png)
+
 | 1 | 2 | 3 | 4 |
 |---|---|---|---|
 | A | A | A |   |
@@ -185,6 +196,8 @@ Location operators are:
 | B | B | B | B |
 
 - ▶️ `RALIGN(n,m,s)`: filters the first expression so that its span must _right-align_ with the one defined by the second expression: `A` can end with or before `B`, but not after `B`. This mirrors `LALIGN`. For instance, in the first example `AAA` is right-aligned with `BBB` with offset=0 (i.e. they are perfectly aligned), while in the second one `AA` is offset by 1:
+
+![ralign](img/locop-ralign.png)
 
 | 1 | 2 | 3 | 4 |
 |---|---|---|---|
