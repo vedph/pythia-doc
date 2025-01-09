@@ -81,7 +81,7 @@ The indexing behavior is fully defined in the profile, which is just a JSON file
 
 - `text-filter.tei` is used to discard XML tags and the whole TEI header while indexing the text.
 - `text-filter.quotation-mark` is used to ensure that apostrophes are handled correctly, by replacing "smart quotes" with apostrophe character codes proper. Using smart quotes instead of apostrophe is against Unicode semantics and might interfere with tokenizers and filters.
-- `text-filter.upd` is used to add POS tags to the indexed words via [UDPipe](https://lindat.mff.cuni.cz/services/udpipe/). See [UDP Integration](udp.md) for more.
+- `text-filter.upd` is used to add POS tags to the indexed words via [UDPipe](https://lindat.mff.cuni.cz/services/udpipe/). See [UDP Integration](udp) for more.
 
 ```json
 "TextFilters": [
@@ -137,7 +137,7 @@ Here, `author`, `title` and `date` just get their value from the element's conte
 
 So in the end we will get from the TEI header the _document_ attributes named `author`, `title`, `date`, `date-value` (numeric), and `category`.
 
->Note that `date-value` is defined here as the numeric value extracted from the date in the document's content. This is different from [privileged attribute](model.md#objects-and-attributes) `date_value` (underscore), and it is used as the source for it. So in the end we will just use the privileged attribute rather than this.
+>Note that `date-value` is defined here as the numeric value extracted from the date in the document's content. This is different from [privileged attribute](../query#pair-name) `date_value` (underscore), and it is used as the source for it. So in the end we will just use the privileged attribute rather than this.
 
 ▶️ (4) **document sort key builder**: the standard sort key builder (`doc-sortkey-builder.standard`) is fine for this example. It sorts documents by author, title, and date.
 
@@ -499,7 +499,7 @@ Here, the first definition refers to the root node, and the second to the childr
 
 ⚠️ If using additional components in the profile, you must add a -t option with the tag name of their plugin, e.g. `-t factory-provider.chiron` for a Chiron-based Pythia factory provider to take advantage of the Latin phonology analyzer in Chiron. You should ensure that the corresponding plugin subfolder (`Pythia.Cli.Plugin.Chiron`) is present under the pythia CLI `plugins` folder.
 
-▶️ (4) **build words index** in database. This builds [words and lemmata indexes](words.md) on top of text spans, also calculating their distributions in documents grouped according to their attributes:
+▶️ (4) **build words index** in database. This builds [words and lemmata indexes](../words) on top of text spans, also calculating their distributions in documents grouped according to their attributes:
 
 ```bash
 ./pythia index-w -d pythia-demo -c date-value=3 -c date_value=3 -x date

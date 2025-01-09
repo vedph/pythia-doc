@@ -1,14 +1,14 @@
 ---
-title: Analysis Process
+title: Analysis Flow
 layout: default
 parent: Analysis
 nav_order: 1
 ---
 
-# Analysis Process
+# Analysis Flow
 
-- [Analysis Process](#analysis-process)
-  - [Process](#process)
+- [Analysis Flow](#analysis-flow)
+  - [Flow](#flow)
   - [Profile](#profile)
   - [SourceCollector (required)](#sourcecollector-required)
   - [LiteralFilters (optional)](#literalfilters-optional)
@@ -31,9 +31,9 @@ The process is thus structured into a composable pipeline, whose details are def
 
 You can look at [this example](example) for a full profile.
 
-## Process
+## Flow
 
-At the beginning of the indexing process, a **source collector** is used to collect all the text sources from a specified source. For instance, if you are indexing a folder with some files the file-based source collector will enumerate each file in that folder.
+At the beginning of the indexing flow, a **source collector** is used to collect all the text sources from a specified source. For instance, if you are indexing a folder with some files the file-based source collector will enumerate each file in that folder.
 
 For each source collected in this way, the steps are:
 

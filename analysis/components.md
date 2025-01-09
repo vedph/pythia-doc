@@ -56,7 +56,7 @@ nav_order: 2
     - [XSLT Text Renderer](#xslt-text-renderer)
     - [LIZ Text Renderer](#liz-text-renderer)
 
-This is an overview of some stock components coming with Pythia. Everyone can add new components at will, and use them in the Pythia [profile](analysis.md).
+This is an overview of some stock components coming with Pythia. Everyone can add new components at will, and use them in the Pythia profile.
 
 ![components](../img/components.png)
 
