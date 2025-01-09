@@ -58,7 +58,7 @@ nav_order: 2
 
 This is an overview of some stock components coming with Pythia. Everyone can add new components at will, and use them in the Pythia [profile](analysis.md).
 
-![components](img/components.png)
+![components](../img/components.png)
 
 ## Source Collectors
 

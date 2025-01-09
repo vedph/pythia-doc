@@ -13,7 +13,7 @@ The main issue in integrating POS taggers into the complex Pythia [analysis flow
 
 As a recap, the figure below shows the Pythia's analysis components in their flow:
 
-![components](img/components.png)
+![components](../img/components.png)
 
 To solve these issues while still being compliant with its open and modular architecture, Pythia provides a couple of plugins designed to work together: the [UDP text filter](components.md#udp-text-filter) and the [UDP token filter](components.md#udp-token-filter).
 

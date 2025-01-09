@@ -1,0 +1,27 @@
+body {
+  font-family: Calibri, sans-serif;
+}
+span.hit {
+  background-color: #f8ff3d;
+}
+span.pers-name {
+  color: #598234;
+}
+span.geog-name {
+  color: #339966;
+}
+div {
+  margin: 16px 0;
+}
+p {
+  margin: 4px 0;
+}
+q {
+  font-style: italic;
+}
+q:before,q:after{content:''}
+span.nr {
+  color: silver;
+  font-size: 95%;
+  margin-right: 8px;
+}
