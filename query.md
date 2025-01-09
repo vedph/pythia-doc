@@ -192,7 +192,13 @@ For your reference, all the arguments names are listed here, but not all of the 
 
 >⚙️ In the current implementation, each operator corresponds to a [PL/pgSQL](https://www.postgresql.org/docs/current/plpgsql.html) function, conventionally prefixed with `pyt_`. These functions receive the arguments listed above in addition to the positions being tested, which are handled by the search system.
 
-💡 The potential of these alignment operators may not be immediately evident, but they can provide a lot of power for contextual searches. For instance, not only you can search for a word before or after or near another word, specifying the minimum and maximum distance, and limiting results to those words belonging to the same larger encompassing structure (e.g. a sentence); but you can also search for a word at the beginning of a verse, i.e. a word left-aligned with a verse with maximum distance=0, or at its end, i.e. right-aligned with maximum distance=0, etc. Remember that in Pythia everything is an object, whether it's a single word or a larger linguistic structure like phrase, sentence, verse, or even non-strictly linguistic structures like typographic entities as paragraphs; and such objects all have a start and an end position, making them segments. You are free to look for any type of alignment between any types of segments, and additionally to play with the operation arguments for minimum, maximum, and embracing structure.
+💡 The potential of these alignment operators may not be immediately evident, but they can provide a lot of power for contextual searches.
+
+To start with, you can search for a word before or after or near another word, specifying the minimum and maximum distance, and also limiting results to those words included in the same larger encompassing structure (e.g. a sentence).
+
+Additionally, the power of these operator shines when dealing with larger structures; for instance, you can search for a word at the beginning of a verse, i.e. a word left-aligned with a verse with maximum distance=0, or at its end, i.e. right-aligned with maximum distance=0, etc.
+
+Remember that in Pythia everything is an object, whether it's a single word or a larger linguistic structure like phrase, sentence, verse, or even non-strictly linguistic structures like typographic entities as paragraphs; and such objects all have a start and an end position, making them like segments (a token is just a segment where by definition start and end positions coincide, because positions are token-based). You are free to look for any type of alignment between any types of segments, and additionally play with the operation arguments for minimum, maximum, and embracing structure.
 
 ## Sections
 
