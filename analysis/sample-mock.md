@@ -139,7 +139,7 @@ The indexing behavior is fully defined in the profile, which is just a JSON file
 ],
 ```
 
-Here, `author`, `title` and `date` just get their value from the element's content; `category` gets its value from an element's attribute (`@type`); `date-value` parses its target element content as a numeric value (`[N]`), using a regular expression. This expression is anchored to the end of the element's text, and matches an integer number, either positive or negative, between brackets, eventually followed by whitespaces.
+Here, `author`, `title` and `date` just get their value from the element's content; `category` gets its value from an element's attribute (`@type`); `date-value` parses its target element content as a numeric value (`[N]`), using a regular expression. This expression is anchored to the end of the element's text, and matches an integer number, either positive or negative, between brackets, optionally followed by whitespaces.
 
 So in the end we will get from the TEI header the _document_ attributes named `author`, `title`, `date`, `date-value` (numeric), and `category`.
 

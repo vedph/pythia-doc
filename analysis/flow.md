@@ -42,7 +42,7 @@ For each source collected in this way, the steps are:
 3. a document **attribute parser** is used to extract additional metadata for the document from its text. Also, a **document sort key builder** and a **document date value calculator** are used to calculate additional metadata for each document.
 4. optionally, a chain of **text filters** get applied to the text. These can be used to prepare a text as a whole, before submitting it to the tokenization process.
 5. the filtered text is tokenized by a **tokenizer** of choice, and each token is filtered with a chain of **token filters**.
-6. eventually, the unfiltered text is analyzed for structures by one or more **structure parsers**.
+6. optionally, the unfiltered text is analyzed for structures by one or more **structure parsers**.
 
 The final result is completely self-contained in the index database.
 
@@ -70,7 +70,7 @@ This is a single configurable component (from the `Corpus` subsystem).
 
 A _source collector_ is a component which, given a global source of documents, scans it to enumerate all the documents it contains, returning a source string (e.g. a file path, a URI, etc.) for each of them.
 
-For instance, for a file-system based source you would use a `FileSourceCollector`, which enumerates all the file paths matching a specified mask in a specified folder. Or you might have your documents in a BLOB storage, and use a BLOB-based source collector to retrieve the URIs of all the BLOBs, eventually filtering them.
+For instance, for a file-system based source you would use a `FileSourceCollector`, which enumerates all the file paths matching a specified mask in a specified folder. Or you might have your documents in a BLOB storage, and use a BLOB-based source collector to retrieve the URIs of all the BLOBs, optionally filtering them.
 
 Once you get the ID of a document, you can use an `ITextRetriever` instance to retrieve each text from its source. Again, the retriever might be file-based (like `FileTextRetriever`), BLOB-based (like `BlobTextRetriever` for Azure BLOBs), etc.
 

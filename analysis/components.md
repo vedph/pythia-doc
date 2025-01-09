@@ -147,7 +147,7 @@ XML document's attributes parser. This extracts document's metadata from its XML
 Options:
 
 - `Mappings`: an array of strings, one for each mapping. A mapping contains:
-  1. attribute name: the attribute target name, eventually suffixed with `+` when more than 1 values for it are allowed. When not set (which is the default value), the search stops at the first match.
+  1. attribute name: the attribute target name, optionally suffixed with `+` when more than 1 values for it are allowed. When not set (which is the default value), the search stops at the first match.
   2. equals: the equals sign (`=`) introduces the search expression.
   3. XPath: a full XPath 1.0 expression to locate the attribute's value(s). Namespace prefixes can be used, either from the document or from `Namespaces`.
   4. attribute type (optional): the type of the attribute, divided from the previous token by a space; it is either `[T]`=text or `[N]`=numeric.
@@ -201,7 +201,7 @@ Options:
 
 - 🔑 tag: `doc-datevalue-calculator.unix`
 
-Unix-date modern date value calculator. This is based on an attribute with some indication of year and eventually month and day, and calculates the Unix time from it. Alternatively, it can also provide the result as just the integer number resulting from concatenating `YYYYMMDD`, like `20140420` from Y=2014, M=4, D=20. This is a more user-friendly value for a simple date.
+Unix-date modern date value calculator. This is based on an attribute with some indication of year and optionally month and day, and calculates the Unix time from it. Alternatively, it can also provide the result as just the integer number resulting from concatenating `YYYYMMDD`, like `20140420` from Y=2014, M=4, D=20. This is a more user-friendly value for a simple date.
 
 Options:
 
@@ -311,7 +311,7 @@ Options:
   - `Lemma` = 1
   - `UPosTag` = 2
   - `XPosTag` = 4
-  - `Feats` = 8 (=one attribute per feature, named after it, and eventually prefixed)
+  - `Feats` = 8 (=one attribute per feature, named after it, and optionally prefixed)
   - `Head` = 16
   - `DepRel` = 32
   - `Misc` = 64

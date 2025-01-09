@@ -155,7 +155,7 @@ The SQL filters for corpus (`INNER JOIN`) and documents (`WHERE`), when present,
   
 - `locop`:
   - 🌳 _enter_: clear locop args (`_locopArgs`), set `ARG_OP`;
-  - 🌳 _exit_: validate args and eventually supply defaults, then build SQL, according to whether it's negated or not.
+  - 🌳 _exit_: validate args and optionally supply defaults, then build SQL, according to whether it's negated or not.
 - `locnArg`:
   - 🌳 _enter_: collect `n` arg value in `_locopArgs`.
 - `locsArg`:

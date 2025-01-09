@@ -24,7 +24,7 @@ As explained about the [Pythia model](index#model), the index is just a set of _
 
 So, a search essentially matches an attribute with a value using some comparison type. This matching is the core of any search, and represents what is called a _pair_, i.e. the union of an attribute's name with a value via a comparison operator.
 
-A query can consist of a _single pair_, or connect _more pairs_ with a number of logical or positional (location) operators, eventually defining precedence with brackets.
+A query can consist of a _single pair_, or connect _more pairs_ with a number of logical or positional (location) operators, optionally defining precedence with brackets.
 
 ## Pair
 
@@ -104,8 +104,8 @@ Of course, you are not limited to a single pair. Multiple pairs can be _connecte
 
 A different set of **logical** operators can be used according to their context (section, see [below](#sections)):
 
-- in the _document section_: `AND`/`OR`/`AND NOT`, eventually grouped by `()`.
-- in the _text section_: `OR` or location operators, eventually grouped by `()`.
+- in the _document section_: `AND`/`OR`/`AND NOT`, optionally grouped by `()`.
+- in the _text section_: `OR` or location operators, optionally grouped by `()`.
 
 >Location operators implicitly are all in an `AND` relationship with their left node. In fact, `AND` as a standalone operator is not defined, as in the context of a concordance search engine it would make little sense to find 2 words which happen to be at _any_ distance within the same document. Rather, a positional relationship is always implied by an AND to make the search meaningful (we are looking for connected words in some linguistically motivated context, rather than for documents matching several words, whatever their mutual relationships).
 
@@ -152,7 +152,7 @@ Location operators are:
 | A | B |   |
 | A | X | B |
 
-- ▶️ `INSIDE(ns,ms,ne,me,s)`: filters the first expression so that it must be _inside_ the span defined by the second one, eventually at the specified distance from the container start or end. For instance, here `A` is inside `BBBB`, at a distance of 2 from its start, and of 1 from its end:
+- ▶️ `INSIDE(ns,ms,ne,me,s)`: filters the first expression so that it must be _inside_ the span defined by the second one, optionally at the specified distance from the container start or end. For instance, here `A` is inside `BBBB`, at a distance of 2 from its start, and of 1 from its end:
 
 | 1 | 2 | 3 | 4 |
 |---|---|---|---|
@@ -160,7 +160,7 @@ Location operators are:
 | B | B | B | B |
 
 
-- ▶️ `OVERLAPS(n,m,s)`: filters the first expression so that its span must overlap the one defined by the second expression, eventually by the specified amount of positions. Here `n` represents the minimum required overlap, and `m` the maximum allowed overlap.For example, both these are cases of overlap of a structure `A` with a structure `B`; in the first one, the overlap extent is 2; in the second, it's 1:
+- ▶️ `OVERLAPS(n,m,s)`: filters the first expression so that its span must overlap the one defined by the second expression, optionally by the specified amount of positions. Here `n` represents the minimum required overlap, and `m` the maximum allowed overlap.For example, both these are cases of overlap of a structure `A` with a structure `B`; in the first one, the overlap extent is 2; in the second, it's 1:
 
 | 1 | 2 | 3 | 4 | 5 |
 |---|---|---|---|---|
@@ -196,7 +196,7 @@ Location operators are:
 |   | A | A |   |
 | B | B | B | B |
 
->⚙️ In the current implementation, each operator corresponds to a PL/pgSQL function, conventionally prefixed with `pyt_`. These functions receive the arguments listed above in addition to the positions being tested, which are handled by the search system.
+>⚙️ In the current implementation, each operator corresponds to a [PL/pgSQL](https://www.postgresql.org/docs/current/plpgsql.html) function, conventionally prefixed with `pyt_`. These functions receive the arguments listed above in addition to the positions being tested, which are handled by the search system.
 
 ## Sections
 
@@ -206,9 +206,9 @@ To allow for a simpler syntax, conditions about corpora, documents, and text are
 
 1. **corpus** filters (optional). The corpus section is just a list of corpora IDs in `@@...;`. For the section to match, it is enough to match any of the listed corpora IDs.
 
-2. **document** filters section (optional). The documents set is represented by an expression of pairs inside `@...;`, connected by `AND`/`OR`/`AND NOT`/`OR NOT`, and eventually grouped by `()`.
+2. **document** filters section (optional). The documents set is represented by an expression of pairs inside `@...;`, connected by `AND`/`OR`/`AND NOT`/`OR NOT`, and optionally grouped by `()`.
 
-3. **tokens** and **structures** section (required). An expression of pairs, each inside `[...]`, connected by `OR` or a location operator (e.g. `NEAR`), and eventually grouped by `()`. Location operators would not be useful in documents and corpora sections, as documents and corpora do not refer to positions.
+3. **tokens** and **structures** section (required). An expression of pairs, each inside `[...]`, connected by `OR` or a location operator (e.g. `NEAR`), and optionally grouped by `()`. Location operators would not be useful in documents and corpora sections, as documents and corpora do not refer to positions.
 
 Thus, a query's skeleton is (whitespaces are not relevant, but I place sections in different lines just to make the query more readable):
 
