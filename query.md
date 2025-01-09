@@ -14,6 +14,13 @@ nav_order: 1
     - [Pair Operator](#pair-operator)
   - [Logical Operators](#logical-operators)
   - [Location Operators](#location-operators)
+    - [Near](#near)
+    - [Before](#before)
+    - [After](#after)
+    - [Inside](#inside)
+    - [Overlaps](#overlaps)
+    - [Lalign](#lalign)
+    - [Ralign](#ralign)
   - [Sections](#sections)
 
 The Pythia query language is used to build SQL-based queries from much simpler expressions.
@@ -127,89 +134,65 @@ For your reference, all the arguments names are listed here, but not all of the 
 
 👉 All the location operators can be **negated** by prefixing a `NOT` (note that in this case the `s` argument is not allowed, as it would be meaningless).
 
-Location operators are:
+### Near
 
-- ▶️ `NEAR(n,m,s)`: filters the left expression so that it must be _near_, i.e. at the specified distance (ranging from a minimum -`n`- to a maximum -`m`-) from the second one, either before or after it. For instance, here word `A` and `B` are at distance 0 in `AB` or `BA`; at distance 1 in `AXB` or `BXA`; etc.
+▶️ `NEAR(n,m,s)`: filters the left expression so that it must be _near_, i.e. at the specified distance (ranging from a minimum -`n`- to a maximum -`m`-) from the second one, either before or after it. For instance, in Figure 1 A is either before or after B; the distance between the left A and B is 1, while the distance between B and the right A is 0.
 
 ![near](img/locop-near.png)
 
-| 1 | 2 | 3 |
-|---|---|---|
-| A | B |   |
-| B | A |   |
-| A | X | B |
-| B | X | A |
+- Figure 1 - NEAR
 
-- ▶️ `BEFORE(n,m,s)`: filters the left expression so that it must be _before_ the second one, at the specified distance from it. For instance, word `A` is before `B` at distance 0 (i.e. `B` immediately follows `A`) in `AB`, and at distance 1 in `AXB`:
+### Before
+
+▶️ `BEFORE(n,m,s)`: filters the left expression so that it must be _before_ the second one, at the specified distance from it. For instance, in Figure 2 two instances of A are before B, either at distance 1 or 0.
 
 ![before](img/locop-before.png)
 
-| 1 | 2 | 3 |
-|---|---|---|
-| A | B |   |
-| A | X | B |
+- Figure 2 - BEFORE
 
-- ▶️ `AFTER(n,m,s)` filters the first expression so that it must be _after_ the second one, at the specified distance from it. This operator mirrors `BEFORE`. For instance, word `B` is after `A` at distance 0 (i.e. `B` immediately follows `A`) in `AB`, and at distance 1 in `AXB`:
+### After
+
+▶️ `AFTER(n,m,s)` filters the first expression so that it must be _after_ the second one, at the specified distance from it. This operator mirrors `BEFORE`. For instance, in Figure 3 two instances of A are after B, either at distance 1 or 0.
 
 ![after](img/locop-after.png)
 
-| 1 | 2 | 3 |
-|---|---|---|
-| A | B |   |
-| A | X | B |
+- Figure 3 - AFTER
 
-- ▶️ `INSIDE(ns,ms,ne,me,s)`: filters the first expression so that it must be _inside_ the span defined by the second one, optionally at the specified distance from the container start or end. For instance, here `A` is inside `BBBB`, at a distance of 2 from its start, and of 1 from its end:
+### Inside
+
+▶️ `INSIDE(ns,ms,ne,me,s)`: filters the first expression so that it must be _inside_ the span defined by the second one, optionally at the specified minimum and/or maximum distance from the container start (`ns`, `ms`) or end (`ne`, `me`). For instance, in the 4 examples of Figure 4 A is always inside B, whatever its relative position and extent.
 
 ![inside](img/locop-inside.png)
 
-| 1 | 2 | 3 | 4 |
-|---|---|---|---|
-|   |   | A |   |
-| B | B | B | B |
+- Figure 4 - INSIDE
 
-- ▶️ `OVERLAPS(n,m,s)`: filters the first expression so that its span must overlap the one defined by the second expression, optionally by the specified amount of positions. Here `n` represents the minimum required overlap, and `m` the maximum allowed overlap.For example, both these are cases of overlap of a structure `A` with a structure `B`; in the first one, the overlap extent is 2; in the second, it's 1:
+### Overlaps
+
+▶️ `OVERLAPS(n,m,s)`: filters the first expression so that its span must overlap the one defined by the second expression, optionally by the specified amount of positions. Here `n` represents the minimum required overlap, and `m` the maximum allowed overlap. For instance, in the 4 examples of Figure 5 there is always overlap (of extent 1) between A and B.
 
 ![overlaps](img/locop-overlaps.png)
 
-| 1 | 2 | 3 | 4 | 5 |
-|---|---|---|---|---|
-|   |   | A | A | A |
-| B | B | B | B |   |
+- Figure 5 - OVERLAPS
 
-| 1 | 2 | 3 | 4 | 5 |
-|---|---|---|---|---|
-| A | A |   |   |   |
-|   | B | B | B | B |
+### Lalign
 
-- ▶️ `LALIGN(n,m,s)`: filters the first expression so that its span must _left-align_ with the one defined by the second expression: `A` can start with or after `B`, but not before `B`. Here, `n` and `m` specify the minimum and maximum offsets from start. For instance, in the first example `AAA` is left-aligned with `BBB` with offset=0 (i.e. they are perfectly aligned), while in the second one `AA` is offset by 1.
+▶️ `LALIGN(n,m,s)`: filters the first expression so that its span must _left-align_ with the one defined by the second expression: `A` can start with or after `B`, but not before `B`. Here, `n` and `m` specify the minimum and maximum offsets from start. For instance, in Figure 6 the left A/B pair has a perfect left alignment (distance=0), while the right pair has offset=1 from the left-alignment position.
 
 ![lalign](img/locop-lalign.png)
 
-| 1 | 2 | 3 | 4 |
-|---|---|---|---|
-| A | A | A |   |
-| B | B | B | B |
+- Figure 6 - LALIGN
 
-| 1 | 2 | 3 | 4 |
-|---|---|---|---|
-|   | A | A |   |
-| B | B | B | B |
+### Ralign
 
-- ▶️ `RALIGN(n,m,s)`: filters the first expression so that its span must _right-align_ with the one defined by the second expression: `A` can end with or before `B`, but not after `B`. This mirrors `LALIGN`. For instance, in the first example `AAA` is right-aligned with `BBB` with offset=0 (i.e. they are perfectly aligned), while in the second one `AA` is offset by 1:
+▶️ `RALIGN(n,m,s)`: filters the first expression so that its span must _right-align_ with the one defined by the second expression: `A` can end with or before `B`, but not after `B`. This mirrors `LALIGN`. For instance, in Figure 6 the left A/B pair has a perfect right alignment (distance=0), while the right pair has offset=1 from the right-alignment position.
 
 ![ralign](img/locop-ralign.png)
 
-| 1 | 2 | 3 | 4 |
-|---|---|---|---|
-|   | A | A | A |
-| B | B | B | B |
-
-| 1 | 2 | 3 | 4 |
-|---|---|---|---|
-|   | A | A |   |
-| B | B | B | B |
+- Figure 7 - RALIGN
 
 >⚙️ In the current implementation, each operator corresponds to a [PL/pgSQL](https://www.postgresql.org/docs/current/plpgsql.html) function, conventionally prefixed with `pyt_`. These functions receive the arguments listed above in addition to the positions being tested, which are handled by the search system.
+
+💡 The potential of these alignment operators may not be immediately evident, but they can provide a lot of power for contextual searches. For instance, not only you can search for a word before or after or near another word, specifying the minimum and maximum distance, and limiting results to those words belonging to the same larger encompassing structure (e.g. a sentence); but you can also search for a word at the beginning of a verse, i.e. a word left-aligned with a verse with maximum distance=0, or at its end, i.e. right-aligned with maximum distance=0, etc. Remember that in Pythia everything is an object, whether it's a single word or a larger linguistic structure like phrase, sentence, verse, or even non-strictly linguistic structures like typographic entities as paragraphs; and such objects all have a start and an end position, making them segments. You are free to look for any type of alignment between any types of segments, and additionally to play with the operation arguments for minimum, maximum, and embracing structure.
 
 ## Sections
 
