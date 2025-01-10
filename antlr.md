@@ -7,7 +7,7 @@ nav_order: 1
 
 # ANTLR
 
-Search queries are built by an ANTLR language defined in `pythia.g4` grammar. VSCode has a nice extension for ANTLR syntax support: `ANTLR4 grammar syntax support`.
+Search queries are built by an [ANTLR](https://www.antlr.org) language defined in `pythia.g4` grammar. VSCode has a nice extension for ANTLR syntax support: `ANTLR4 grammar syntax support`.
 
 You can also test online by pasting the Pythia g4 grammar into `Parser` and clearing `Lexer` in the [ANTLR Online Lab](http://lab.antlr.org).
 
