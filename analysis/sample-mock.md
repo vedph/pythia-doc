@@ -22,11 +22,12 @@ nav_order: 4
 
 ## Corpus Description
 
-In this example we will create a Pythia index from scratch, starting from a couple of very short and simple TEI documents. The files for this example are listed here:
+In this example we will create a Pythia index from scratch, starting from a couple of very short and simple TEI documents. All the files for this example are available here:
 
 - [Catullus](./assets/sample-mock/catull-084.xml)
 - [Horatius](./assets/sample-mock/hor-carm1.xml)
-- [profile](./assets/sample-mock/example.json)
+- [build profile](./assets/sample-mock/example.json)
+- [stage profile](./assets/sample-mock/example-prod.json)
 - [sample XSLT](./assets/sample-mock/read.xsl)
 - [sample CSS for XSLT](./assets/sample-mock/read.css)
 
@@ -477,7 +478,26 @@ Here, the first definition refers to the root node, and the second to the childr
 
 ### Indexing
 
->💡 The full indexing procedure can be executed at once using a batch script, like the [example provided for Windows](./assets/sample-mock/go.bat). In this script the database name is rather `pythia-demo`.
+💡 The full indexing procedure can be executed at once using a batch script, like this:
+
+```bat
+@echo off
+set pt=D:\Projects\Pythia\PythiaApi\pythia\bin\Debug\net8.0\pythia.exe
+%pt% create-db -d pythia-demo -c
+pause
+%pt% add-profiles c:\users\dfusi\desktop\pythia\example.json -d pythia-demo
+pause
+%pt% index example c:\users\dfusi\desktop\pythia\*.xml -o -d pythia-demo
+pause
+%pt% index-w -d pythia-demo -c date-value=3 -c date_value=3 -x date
+pause
+%pt% add-profiles c:\users\dfusi\desktop\pythia\example-prod.json -i example -d pythia-demo
+pause
+%pt% bulk-write c:\users\dfusi\desktop\pythia\bulk -d pythia-demo
+pause
+```
+
+>Note that in this batch the database name is rather `pythia-demo`. Of course you can change it to the default `pythia`.
 
 ▶️ (1) use the pythia CLI to **create a Pythia database**, named `pythia`:
 
@@ -487,13 +507,11 @@ Here, the first definition refers to the root node, and the second to the childr
 
 >The `-c`lear option ensures that you start with a blank database should the database already be present, so you can repeat this command later if you want to reset the database and start from scratch.
 
-▶️ (2) **add the profile** to this database:
+▶️ (2) **add the profile** to this database from [example.json](assets/sample-mock/example.json):
 
 ```bash
 ./pythia add-profiles c:/users/dfusi/desktop/pythia/example.json pythia
 ```
-
->If you got the Chiron-based plugin and you want to add phonological data, use `example-c.json` instead.
 
 ▶️ (3) **index documents**:
 
@@ -501,9 +519,9 @@ Here, the first definition refers to the root node, and the second to the childr
 ./pythia index example c:/users/dfusi/desktop/pythia/*.xml pythia -o
 ```
 
->If you want to run a preflight indexing before modifying the existing index, add the `-d` (=dry run) option. Also, option `-o` stores the content of each document into the index itself as recommended, so that we can later retrieve it by just looking at the index.
+>If you want to run a preflight indexing before modifying the existing index, add the `-d` (=dry run) option. On passage, notice that option `-o` stores the content of each document into the index itself as recommended, so that we can later retrieve it by just looking at the index.
 
-⚠️ If using additional components in the profile, you must add a -t option with the tag name of their plugin, e.g. `-t factory-provider.chiron` for a Chiron-based Pythia factory provider to take advantage of the Latin phonology analyzer in Chiron. You should ensure that the corresponding plugin subfolder (`Pythia.Cli.Plugin.Chiron`) is present under the pythia CLI `plugins` folder.
+⚠️ If using additional components in the profile, you must add a `-t` option with the tag name of their plugin, e.g. `-t factory-provider.chiron` for a Chiron-based Pythia factory provider to take advantage of the Latin phonology analyzer in Chiron. In this case, you should ensure that the corresponding plugin subfolder (`Pythia.Cli.Plugin.Chiron`) is present under the pythia CLI `plugins` folder.
 
 ▶️ (4) **build words index** in database. This builds [words and lemmata indexes](../words) on top of text spans, also calculating their distributions in documents grouped according to their attributes:
 
@@ -511,15 +529,15 @@ Here, the first definition refers to the root node, and the second to the childr
 ./pythia index-w -d pythia-demo -c date-value=3 -c date_value=3 -x date
 ```
 
->The `-c` option specifies which document attributes are to be treated as numeric, while `-x` removes the `date` attribute from the distributions. This is because this attribute is just a human-friendly textual version of the date value so it would just add useless data to the index, as in most cases it will be a different string value for each document.
+>💡 The `-c` option specifies which document attributes are to be treated as numeric, while `-x` removes the `date` attribute from the distributions. This is because this attribute is just a human-friendly textual version of the date value so it would just add useless data to the index, as in most cases it will be a different string value for each document.
 
-▶️ (5) **adjust the profile** for production, by replacing the text retriever ID and text renderer script in the database profile:
+▶️ (5) **adjust the profile** for production from [example-prod.json](assets/sample-mock/example-prod.json), by replacing the text retriever ID and text renderer script in the database profile:
 
 ```bash
 ./pythia add-profiles c:/users/dfusi/desktop/pythia/example-prod.json -i example
 ```
 
->If you got the Chiron-based plugin and you want to add phonological data, use `example-c-prod.json` instead. The `-i example` option assigns the ID `example` to the profile loaded from file `example-prod.json`. This has the effect of overwriting the profile with the new one, rather than automatically assigning an ID based on the source file name (which would result in adding a new profile with ID `example-prod`). The adjusted profile uses a database-based text retriever, so that texts are loaded from database rather than from the file system; and embeds the text rendition XSLT script in the text renderer options, rather than loading it from the file system. Both these changes make the database portable.
+>The `-i example` option assigns the ID `example` to the profile loaded from file [example-prod.json](assets/sample-mock/example-prod.json). This has the effect of overwriting the profile with the new one, rather than automatically assigning an ID based on the source file name (which would result in adding a new profile with ID `example-prod`). The adjusted profile uses a database-based text retriever, so that texts are loaded from database rather than from the file system; and embeds the text rendition XSLT script in the text renderer options, rather than loading it from the file system. Both these changes make the database portable.
 
 ▶️ (6) _optionally_, if you want to **bulk export** your database tables in a format ready to be automatically picked up and restored by the Pythia API, run the `bulk-write` command:
 

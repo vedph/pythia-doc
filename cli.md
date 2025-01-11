@@ -70,6 +70,8 @@ This allows reusing a unique code base (and thus its already compiled binaries) 
 ./pythia build-sql
 ```
 
+>Pythia uses [ANTLR](https://www.antlr.org) to convert its query DSL into SQL. To play with the grammar, you can use the [ANTLR4 lab](http://lab.antlr.org) and get the grammar definition from 🌐 <https://github.com/vedph/pythia/blob/master/Pythia.Core/Assets/pythia.g4>.
+
 ## Build Word Index Command
 
 🎯 Build words index from tokens.
