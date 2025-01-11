@@ -107,7 +107,9 @@ The set of PostgreSQL binary files used with this option are generated via bulk 
 So, the typical procedure to seed a database in your host using the binary files is:
 
 ▶️ 1. use the [CLI tool](cli#bulk-write-command) to generate the bulk binary files.
+
 ▶️ 2. copy the generated files (there is one for each table in the database) in some folder in your host machine (e.g. `/opt/dump`).
+
 ▶️ 3. connect this folder to the container API via Docker volume binding, and set the corresponding environment variable (`DATA_SOURCEDIR`) to that volume. In this case, the API will seed data from the dump files on startup when creating the database. For instance:
 
 ```yml
