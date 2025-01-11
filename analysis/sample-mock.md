@@ -22,7 +22,9 @@ nav_order: 4
 
 ## Corpus Description
 
-In this example we will create a Pythia index from scratch, starting from a couple of very short and simple TEI documents. All the files for this example are available here:
+In this example we will create a Pythia index from scratch, starting from a couple of very short and simple TEI documents.
+
+📁 All the files for this example are available here:
 
 - [Catullus](./assets/sample-mock/catull-084.xml)
 - [Horatius](./assets/sample-mock/hor-carm1.xml)

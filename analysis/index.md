@@ -7,12 +7,12 @@ nav_order: 6
 
 # Analysis
 
-- [analysis process](analysis)
+- [analysis flow](flow)
 - [software components](components)
 - [integrating UDPipe](udp)
-  - [simple example](example)
-  - [simple example dump: Catullus](example-dump-1)
-  - [simple example dump: Horatius](example-dump-2)
+  - [simple example](sample-mock)
+  - [simple example dump: Catullus](sample-mock-dump1)
+  - [simple example dump: Horatius](sample-mock-dump2)
 
 The analysis process collects, preprocesses and indexes the input documents, as specified by the provided Pythia pipeline configuration (which is a simple JSON document).
 
