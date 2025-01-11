@@ -29,7 +29,7 @@ The process is thus structured into a composable pipeline, whose details are def
 
 ![components](../img/components.png)
 
-You can look at [this example](example) for a full profile.
+💡 You can look at [this example](./assets/sample-mock/example.json) for a full profile.
 
 ## Flow
 
@@ -63,8 +63,8 @@ The sections of the profile are discussed in the following text.
 
 ## SourceCollector (required)
 
-- section: `SourceCollector`; single, configurable.
-- interface: `ISourceCollector` (Corpus).
+- ▶️ section: `SourceCollector`; single, configurable.
+- ⚙️ interface: `ISourceCollector` (Corpus).
 
 This is a single configurable component (from the `Corpus` subsystem).
 
@@ -89,15 +89,15 @@ In this example we define a file-system based source collector, configured to be
 
 ## LiteralFilters (optional)
 
-- section: `LiteralFilters`; multiple, configurable.
-- interface: `ILiteralFilter`
+- ▶️ section: `LiteralFilters`; multiple, configurable.
+- ⚙️ interface: `ILiteralFilter`
 
 _Literal filters_ are filters to be applied to the literal values of [query pairs](./model.md#pairs) when parsing the query. The section is an optional array of configurable components, each representing a filter. Literal filters preprocess the literal value by removing all the noise information which is removed or otherwise handled by the filters using when indexing. For instance, if your index uses an Italian text filter, this removes any non-letter and non-apostrophe character, while lowercasing each letter and removing any diacritics from it. You may then want to apply the same filtering to input text typed from users, so that e.g. if a user types `Città` in a pair literal value, it gets filtered into `citta`.
 
 ## TextFilters (optional)
 
-- section: `TextFilters`; multiple, configurable.
-- interface: `ITextFilter` (Corpus)
+- ▶️ section: `TextFilters`; multiple, configurable.
+- ⚙️ interface: `ITextFilter` (Corpus)
 
 _Text filters_ are filters to be applied to the source text as a whole, before processing it.
 
@@ -126,8 +126,8 @@ Example:
 
 ## AttributeParsers (optional)
 
-- section: `AttributeParsers`; multiple, configurable.
-- interface: `IAttributeParser` (Corpus)
+- ▶️ section: `AttributeParsers`; multiple, configurable.
+- ⚙️ interface: `IAttributeParser` (Corpus)
 
 A set of optional configurable components. It defines the attributes parsers to be used to _extract metadata from documents_.
 
@@ -164,8 +164,8 @@ For instance, here we want to extract from a TEI header author, title, category,
 
 ## DocSortKeyBuilder (required)
 
-- section: `DocSortKeyBuilder`; single, configurable.
-- interface: `IDocSortKeyBuilder` (Corpus)
+- ▶️ section: `DocSortKeyBuilder`; single, configurable.
+- ⚙️ interface: `IDocSortKeyBuilder` (Corpus)
 
 A single configurable component used to build sort-keys for each document. A sort-key is a string which provides a default sort order for indexed documents.
 
@@ -181,8 +181,8 @@ Example:
 
 ## DocDateValueCalculator (required)
 
-- section: `DocDateValueCalculator`; single, configurable.
-- interface: `IDocDateValueCalculator` (Corpus)
+- ▶️ section: `DocDateValueCalculator`; single, configurable.
+- ⚙️ interface: `IDocDateValueCalculator` (Corpus)
 
 A single configurable component, which calculates an approximated numeric value representing the datation of each document. This can be used for filtering and sorting documents in chronological order.
 
@@ -203,8 +203,8 @@ Here the calculator is configured to read the date value from an attribute named
 
 ## Tokenizer (required)
 
-- section: `Tokenizer`; single, configurable.
-- interfaces: `ITokenizer`; `ITokenFilter`.
+- ▶️ section: `Tokenizer`; single, configurable.
+- ⚙️ interfaces: `ITokenizer`; `ITokenFilter`.
 
 A single configurable component, representing the tokenizer used in indexing, with all its filters.
 
@@ -241,8 +241,8 @@ Example:
 
 ## StructureParsers (optional)
 
-- section: `StructureParsers`; multiple, configurable.
-- interfaces: `IStructureParser`, `IStructureValueFilter`.
+- ▶️ section: `StructureParsers`; multiple, configurable.
+- ⚙️ interfaces: `IStructureParser`, `IStructureValueFilter`.
 
 Array of configurable components, listing zero or more structure parsers. Each component parses a specific type of the document's text structure.
 
@@ -338,8 +338,8 @@ In this example, 3 structures are parsed for poems, stanzas, and verses.
 
 ## TextRetriever (required)
 
-- section: `TextRetriever`; single, configurable.
-- interface: `ITextRetriever`
+- ▶️ section: `TextRetriever`; single, configurable.
+- ⚙️ interface: `ITextRetriever`
 
 A single configurable component used to retrieve the document's text content.
 
@@ -355,8 +355,8 @@ In this example the text is retrieved directly from the index database (which ha
 
 ## TextMapper (required)
 
-- section: `TextMapper`; single, configurable.
-- interface: `ITextMapper` (Corpus)
+- ▶️ section: `TextMapper`; single, configurable.
+- ⚙️ interface: `ITextMapper` (Corpus)
 
 A single configurable component used to build the text map of each document.
 
@@ -400,8 +400,8 @@ For instance, the generic `XmlTextMapper` can be used for XML documents. In this
 
 ## TextPicker (required)
 
-- section: `TextPicker`; single, configurable.
-- interface: `ITextPicker` (Corpus)
+- ▶️ section: `TextPicker`; single, configurable.
+- ⚙️ interface: `ITextPicker` (Corpus)
 
 A single configurable component used to pick a portion of a document's text. This is used when reading the text using a map, or when displaying a search hit in its context. As this context is defined by a map, this ensures that the text piece corresponds to a logical partition (e.g. a `div` or the like) of the source document.
 
@@ -425,8 +425,8 @@ In this sample, the picker is used for XML documents, and assumes that search hi
 
 ## TextRenderer (optional)
 
-- section: `TextRenderer`
-- interface: `ITextRenderer` (Corpus)
+- ▶️ section: `TextRenderer`
+- ⚙️ interface: `ITextRenderer` (Corpus)
 
 A single component used to render the document's text, usually into HTML format.
 
