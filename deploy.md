@@ -47,7 +47,7 @@ services:
         - ASPNETCORE_URLS=http://+:8080
         - CONNECTIONSTRINGS__DEFAULT=User ID=postgres;Password=postgres;Host=pythia-pgsql;Port=5432;Database={0};
         # TODO: add the URL of your frontend app to CORS allowed origins, e.g.:
-        # - ALLOWED__ORIGINS__0=http://www.something.com
+        # - ALLOWED__ORIGINS__0=http://www.your-pythia-frontend-url-here.edu
         - SEEDDELAY=30
         # TODO: change the default user password:
         - STOCKUSERS__0__PASSWORD=P4ss-W0rd!
@@ -57,6 +57,11 @@ services:
         - MESSAGING__APIROOTURL=https://simpleblob.azurewebsites.net/api/
         - MESSAGING__APPROOTURL=https://fusisoft.it/apps/blob/
         - MESSAGING__SUPPORTEMAIL=webmaster@fusisoft.net
+        # TODO: for seeding data uncomment this:
+        # - DATA__SOURCEDIR=/opt/dump/
+    # TODO: for seeding data uncomment this volume and copy bulk files into /opt/dump:
+    # volumes:
+    #     - /opt/dump:/opt/dump
     networks:
         - pythia-network
 
