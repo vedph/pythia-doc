@@ -53,7 +53,7 @@ This allows reusing a unique code base (and thus its already compiled binaries) 
 
 🎯 Add profile(s) from JSON files to the Pythia database with the specified name.
 
-```ps1
+```sh
 ./pythia add-profiles <INPUT_FILES_MASK> [-d <DB_NAME>] [-i <CSV_IDS>] [-p]
 ```
 
@@ -66,7 +66,7 @@ This allows reusing a unique code base (and thus its already compiled binaries) 
 
 🎯 Interactively build SQL code from queries. This command has no arguments, as it starts an interactive text-based session with the user, where each typed query produces the corresponding SQL code.
 
-```ps1
+```sh
 ./pythia build-sql
 ```
 
@@ -76,7 +76,7 @@ This allows reusing a unique code base (and thus its already compiled binaries) 
 
 🎯 Build words index from tokens.
 
-```ps1
+```sh
 ./pythia index-w [-d <DB_NAME>] [-c <COUNTS>] [-x <ATTR>] [-n <ATTR>] [-p <POS>]
 ```
 
@@ -88,7 +88,7 @@ This allows reusing a unique code base (and thus its already compiled binaries) 
 
 Example:
 
-```ps1
+```sh
 ./pythia index-w -c ^date_value=3 -c ^nascita-avv=7 -x author -x data -x date-value -x path -x gruppo-atto -x gruppo-nr -x sede-raccolta -n abbr -n address -n email -n foreign -n org-f -n org-m -n pn-f -n pn-m -n pn-s -p ABBR -p DATE -p EMAIL -p NUM -p PROPN -p SYM -p X
 ```
 
@@ -96,13 +96,13 @@ Example:
 
 🎯 Import bulk tables data from the database as exported with the [bulk write command](#bulk-write-command).
 
-```ps1
+```sh
 ./pythia bulk-read <INPUT_DIR>
 ```
 
 Example:
 
-```ps1
+```sh
 ./pythia bulk-read c:/users/dfusi/desktop/dump
 ```
 
@@ -110,7 +110,7 @@ Example:
 
 🎯 Export bulk tables data from the database, to be later used when restoring it via the API startup services or the [bulk read command](#bulk-read-command).
 
-```ps1
+```sh
 ./pythia bulk-write <OUTPUT_DIR> [-d <DB_NAME>]
 ```
 
@@ -119,7 +119,7 @@ Example:
 
 Example:
 
-```ps1
+```sh
 ./pythia bulk-write c:/users/dfusi/desktop/dump
 ```
 
@@ -148,7 +148,7 @@ Note that in Windows hosts you would need to quote a path including colons (e.g.
 
 🎯 Cache the tokens got from tokenizing the texts from the specified source. This is a legacy command used to apply processing like POS tagging outside the Pythia environment.
 
-```ps1
+```sh
 ./pythia cache-tokens <SOURCE> <OUTPUT_DIR> <PROFILE_PATH> <PROFILE_ID> [-d <DB_NAME>] [-t <PLUGIN_TAG>]
 ```
 
@@ -163,7 +163,7 @@ Note that in Windows hosts you would need to quote a path including colons (e.g.
 
 🎯 Check that each source file for indexing has its corresponding metadata file. For each file in the input mask, it builds the corresponding companion metadata file name by replacing a pattern with a text, and checks whether the resulting path corresponds to an existing file. It is recommended to perform this check before indexing when you are using metadata attribute parsers which rely on companion files, so to ensure your indexing process won't stop when a metadata file is missing.
 
-```ps1
+```sh
 ./pythia check-meta <INPUT_FILE_MASK> [-f REGEX_TO_FIND] [-r TEXT_TO_REPLACE]
 ```
 
@@ -175,7 +175,7 @@ Note that in Windows hosts you would need to quote a path including colons (e.g.
 
 🎯 Create or clear a Pythia database.
 
-```ps1
+```sh
 ./pythia create-db [-d <DB_NAME>] [-c]
 ```
 
@@ -186,7 +186,7 @@ Note that in Windows hosts you would need to quote a path including colons (e.g.
 
 🎯 Dump into a CSV file document name=value pairs for words and lemmata counts. This can be useful when you need to inspect them before creating a word index.
 
-```ps1
+```sh
 ./pythia dump-pairs [-d <DB_NAME>] [-o <OUTPUT_PATH>]
 ```
 
@@ -199,7 +199,7 @@ Note that in Windows hosts you would need to quote a path including colons (e.g.
 
 🎯 Dump text spans into console or CSV.
 
-```ps1
+```sh
 ./pythia dump-spans [-d <DB_NAME>] [-o <OUTPUT_PATH>] [-t <TYPE>] [-n <POS>] [-m <POS>] [-i <ID>] [-a <NAME=VALUE>]
 ```
 
@@ -213,7 +213,7 @@ Note that in Windows hosts you would need to quote a path including colons (e.g.
 
 Example:
 
-```ps1
+```sh
 ./pythia dump-spans -o c:/users/dfusi/desktop/spans.csv -t snt -i 1
 ```
 
@@ -221,7 +221,7 @@ Example:
 
 🎯 Generate and dump the document's text map for the specified document.
 
-```ps1
+```sh
 ./pythia dump-map <SOURCE> <PROFILE_ID> <OUTPUT_PATH> [-d <DB_NAME>] [-t <PLUGIN_TAG>]
 ```
 
@@ -233,7 +233,7 @@ Example:
 
 Example:
 
-```ps1
+```sh
 ./pythia dump-map c:/users/dfusi/desktop/pythia/sample.xml sample c:/users/dfusi/desktop/dump.txt
 ```
 
@@ -260,7 +260,7 @@ To: ... geogName>Ionios</geogName> esse\r\nsed <quote><geogName>Hionios</geogNam
 
 🎯 Export the results of a search into CSV.
 
-```ps1
+```sh
 ./pythia export-search [-d <DB_NAME>] [-q <QUERY>] [-o <OUTPUT_DIR>] [-p <PAGE_SIZE>] [-f <FIRST_PAGE>] [-l <LAST_PAGE>] [-m <MAX_ROWS>] [-c <CONTEXT_SIZE>]
 ```
 
@@ -279,7 +279,7 @@ To: ... geogName>Ionios</geogName> esse\r\nsed <quote><geogName>Hionios</geogNam
 
 When dump mode is enabled, the filtered text is dumped to the specified directory for each document indexed. This can be useful for diagnostic purposes, so that you can inspect the text being input to the indexing process proper.
 
-```ps1
+```sh
 ./pythia index <PROFILE_ID> <SOURCE> [-d <DB_NAME>] [-c <TS>] [-o] [-p] [-t <PLUGIN_TAG>] [-u <DUMP_MODE>] [-r <DUMP_DIR>] [--n-email <EMAIL>] [--n-span <SPAN>] [--n-limit <LIMIT>]
 ```
 
@@ -302,7 +302,7 @@ When dump mode is enabled, the filtered text is dumped to the specified director
 
 🎯 Interactively execute queries against the Pythia database. This command has no arguments, as it starts an interactive text-based session with the user, where each typed query produces the corresponding SQL query code which is then executed.
 
-```ps1
+```sh
 ./pythia query [-d <DB_NAME>]
 ```
 
