@@ -85,6 +85,11 @@ This allows reusing a unique code base (and thus its already compiled binaries) 
 - `-x ATTR`: the document attributes to exclude from word index (multiple).
 - `-n ATTR`: the span attributes to exclude from word index (multiple).
 - `-p POS`: the POS to exclude from word index (multiple).
+- `--n-email EMAIL`: the email address to send notification messages to. When this is set, email notification will be enabled at a fixed time interval (defined by `--n-span`), so you will get periodic updates about a long-running process. Error notifications instead are immediate.
+- `--n-span SPAN`: the timespan in minutes to wait between notifications. Default is 15.
+- `--n-limit LIMIT`: the maximum number of entries to keep in the notifier's tail. Messages are built from all the entries collected up to the notification time, pruning the oldest entries when this limit is exceeded.
+
+>⚠️ Note that notification uses [MailJet](https://www.mailjet.com) and it requires you to save your MailJet API keys into environment variables (named `MAILJET_API_KEY_PUBLIC` and `MAILJET_API_KEY_PRIVATE`).
 
 Example:
 
