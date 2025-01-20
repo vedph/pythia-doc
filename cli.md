@@ -77,7 +77,7 @@ This allows reusing a unique code base (and thus its already compiled binaries) 
 🎯 Build words index from tokens.
 
 ```sh
-./pythia index-w [-d <DB_NAME>] [-c <COUNTS>] [-x <ATTR>] [-n <ATTR>] [-p <POS>]
+./pythia index-w [-d <DB_NAME>] [-c <COUNTS>] [-x <ATTR>] [-n <ATTR>] [-p <POS>] [--n-email <EMAIL>] [--n-span <SPAN>] [--n-limit <LIMIT>] [--n-start]
 ```
 
 - `-c COUNTS`: the class counts for document attribute bins (name=N, multiple). If you want integer only bins, prefix the name with `^`.
@@ -88,6 +88,7 @@ This allows reusing a unique code base (and thus its already compiled binaries) 
 - `--n-email EMAIL`: the email address to send notification messages to. When this is set, email notification will be enabled at a fixed time interval (defined by `--n-span`), so you will get periodic updates about a long-running process. Error notifications instead are immediate.
 - `--n-span SPAN`: the timespan in minutes to wait between notifications. Default is 15.
 - `--n-limit LIMIT`: the maximum number of entries to keep in the notifier's tail. Messages are built from all the entries collected up to the notification time, pruning the oldest entries when this limit is exceeded.
+- `--n-start`: emit an initial notification when indexing starts. This can be useful to ensure that notification is working.
 
 >⚠️ Note that notification uses [MailJet](https://www.mailjet.com) and it requires you to save your MailJet API keys into environment variables (named `MAILJET_API_KEY_PUBLIC` and `MAILJET_API_KEY_PRIVATE`).
 
@@ -285,7 +286,7 @@ To: ... geogName>Ionios</geogName> esse\r\nsed <quote><geogName>Hionios</geogNam
 When dump mode is enabled, the filtered text is dumped to the specified directory for each document indexed. This can be useful for diagnostic purposes, so that you can inspect the text being input to the indexing process proper.
 
 ```sh
-./pythia index <PROFILE_ID> <SOURCE> [-d <DB_NAME>] [-c <TS>] [-o] [-p] [-t <PLUGIN_TAG>] [-u <DUMP_MODE>] [-r <DUMP_DIR>] [--n-email <EMAIL>] [--n-span <SPAN>] [--n-limit <LIMIT>]
+./pythia index <PROFILE_ID> <SOURCE> [-d <DB_NAME>] [-c <TS>] [-o] [-p] [-t <PLUGIN_TAG>] [-u <DUMP_MODE>] [-r <DUMP_DIR>] [--n-email <EMAIL>] [--n-span <SPAN>] [--n-limit <LIMIT>] [--n-start]
 ```
 
 - `PROFILE_ID`: the ID of the profile to use for the source documents.
@@ -300,6 +301,7 @@ When dump mode is enabled, the filtered text is dumped to the specified director
 - `--n-email EMAIL`: the email address to send notification messages to. When this is set, email notification will be enabled at a fixed time interval (defined by `--n-span`), so you will get periodic updates about a long-running process. Error notifications instead are immediate.
 - `--n-span SPAN`: the timespan in minutes to wait between notifications. Default is 15.
 - `--n-limit LIMIT`: the maximum number of entries to keep in the notifier's tail. Messages are built from all the entries collected up to the notification time, pruning the oldest entries when this limit is exceeded.
+- `--n-start`: emit an initial notification when indexing starts. This can be useful to ensure that notification is working.
 
 >⚠️ Note that notification uses [MailJet](https://www.mailjet.com) and it requires you to save your MailJet API keys into environment variables (named `MAILJET_API_KEY_PUBLIC` and `MAILJET_API_KEY_PRIVATE`).
 
