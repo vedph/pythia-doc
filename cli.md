@@ -90,7 +90,7 @@ This allows reusing a unique code base (and thus its already compiled binaries) 
 - `--n-limit LIMIT`: the maximum number of entries to keep in the notifier's tail. Messages are built from all the entries collected up to the notification time, pruning the oldest entries when this limit is exceeded.
 - `--n-start`: emit an initial notification when indexing starts. This can be useful to ensure that notification is working.
 
->⚠️ Note that notification uses [MailJet](https://www.mailjet.com) and it requires you to save your MailJet API keys into environment variables (named `MAILJET_API_KEY_PUBLIC` and `MAILJET_API_KEY_PRIVATE`).
+>⚠️ Note that notification uses [MailJet](https://www.mailjet.com) and it requires you to save your MailJet API keys into environment variables (named `MAILJET_API_KEY_PUBLIC` and `MAILJET_API_KEY_PRIVATE`). Also, ensure to use the email address you registered with for MailJet: for instance, if you registered as `john.smith@somewhere.org`, you will send notification emails to `john.smith@somewhere.org` and `john.smith@somewhere.org` will be the sender.
 
 Example:
 
@@ -303,7 +303,7 @@ When dump mode is enabled, the filtered text is dumped to the specified director
 - `--n-limit LIMIT`: the maximum number of entries to keep in the notifier's tail. Messages are built from all the entries collected up to the notification time, pruning the oldest entries when this limit is exceeded.
 - `--n-start`: emit an initial notification when indexing starts. This can be useful to ensure that notification is working.
 
->⚠️ Note that notification uses [MailJet](https://www.mailjet.com) and it requires you to save your MailJet API keys into environment variables (named `MAILJET_API_KEY_PUBLIC` and `MAILJET_API_KEY_PRIVATE`).
+>⚠️ Note that notification uses [MailJet](https://www.mailjet.com) and it requires you to save your MailJet API keys into environment variables (named `MAILJET_API_KEY_PUBLIC` and `MAILJET_API_KEY_PRIVATE`). Also, ensure to use the email address you registered with for MailJet: for instance, if you registered as `john.smith@somewhere.org`, you will send notification emails to `john.smith@somewhere.org` and `john.smith@somewhere.org` will be the sender.
 
 ## Query Command
 
