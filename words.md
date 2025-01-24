@@ -46,3 +46,39 @@ Their counts index is created as follows:
 2. for each word, go through all the collected pairs and calculate the count of its spans in each of the document attribute's name=value pair.
 
 3. the lemmata counts are just the sum of the words counts for each lemma.
+
+Of course, once you have the index in the database, you can directly access data at will, or export them for third-party analysis. For instance, this simple query:
+
+```sql
+select w.pos, count(w.id) as c, sum(w.count) as f
+from word w 
+group by w.pos 
+order by w.pos;
+```
+
+provides the distribution of words into POS categories, with their lexical frequency (`c`) and textual frequency (`f`), e.g.:
+
+| pos   | c     | f      |
+|-------|-------|--------|
+| ADJ   | 9596  | 114159 |
+| ADP   | 175   | 157239 |
+| ADV   | 1127  | 64056  |
+| AUX   | 276   | 45142  |
+| CCONJ | 59    | 43776  |
+| DET   | 240   | 100195 |
+| INTJ  | 18    | 100    |
+| NOUN  | 11472 | 324014 |
+| PRON  | 217   | 42082  |
+| SCONJ | 82    | 20710  |
+| VERB  | 12034 | 117798 |
+
+Or, this variation:
+
+```sql
+select length(w.value), count(w.id) as c, sum(w.count) as f
+from word w 
+group by length(w.value) 
+order by length(w.value);
+```
+
+provides the list of words and their frequencies correlated to their length (it's an easy prediction that the shortest words, like articles, prepositions, etc. have the highest textual frequencies); etc.
