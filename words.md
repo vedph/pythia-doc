@@ -11,7 +11,7 @@ Optionally, the database can include a superset of calculated data essentially r
 
 Spans are used as the base for building a list of **words**, representing all the unique combinations of each token's language, value, part of speech, and lemma. Each word also has its pre-calculated total count of the corresponding tokens.
 
-Provided that your indexer uses some kind of lemmatizer, words are the base for building a list of **lemmata**, representing all the word forms belonging to the same base form (lemma). Each lemma also has its pre-calculated total count of word forms.
+Provided that your indexer uses some kind of lemmatizer, words are the base for building an approximate list of **lemmata**, representing all the word forms belonging to the same base form (lemma). Each lemma also has its pre-calculated total count of word forms.
 
 Both words and lemmata have a pre-calculated detailed distribution across documents, as grouped by each of the document's attribute's unique name=value pair.
 
@@ -37,7 +37,50 @@ The word and lemma index is created as follows:
 
 2. words are inserted grouping tokens by language, value, POS, and lemma. This means that we define as the same word form all the tokens having these properties equal. The word's count is the count of all the tokens belonging to it. Once words are inserted, their identifiers are updated in the corresponding spans.
 
-3. lemmata are inserted grouping tokens by language and lemma, provided that there is one. The lemma has been assigned to tokens by a POS tagger. Thus each unique combination of language and lemma in a token is a lemma. The lemma's count is the sum of the count of all the words belonging to it. Once lemmata are inserted, their identifiers are updated in the corresponding words.
+3. lemmata are inserted grouping tokens by language, POS, and lemma, provided that there is one. The lemma has been assigned to tokens by a POS tagger. Thus each unique combination of language, POS and lemma in a token is a lemma. This is different from word forms (here "words"), where also value is added to the combination. So, it. "prova" is a word, and it. "prove" is a different word, even if both are inflected forms (singular and plural) of the same lemma.
+
+So, for instance, consider these token spans (spans also include linguistic structures larger than a single token, but of course we exclude them from this index):
+
+| ID  | token value in context | lang. | POS  | lemma   |
+| --- | ---------------------- | ----- | ---- | ------- |
+| 1   | la _prova_ del fatto   | ita   | NOUN | prova   |
+| 2   | molte _prove_          | ita   | NOUN | prova   |
+| 3   | le _prove_ addotte     | ita   | NOUN | prova   |
+| 4   | non _provando_         | ita   | VERB | provare |
+| 5   | il fatto non _prova_   | ita   | VERB | provare |
+
+The corresponding _words_ (combining value, language, POS, lemma) are:
+
+| word              | lang. | POS  | lemma   |
+| ----------------- | ----- | ---- | ------- |
+| prova (from 1)    | ita   | NOUN | prova   |
+| prove (from 2+3)  | ita   | NOUN | prova   |
+| provando (from 4) | ita   | VERB | provare |
+| prova (from 5)    | ita   | VERB | provare |
+
+The corresponding _lemmata_ (combining language, POS, lemma) are:
+
+| lemma              | lang. | POS  | lemma   |
+| ------------------ | ----- | ---- | ------- |
+| prova (from 1+2+3) | ita   | NOUN | prova   |
+| provare (from 4+5) | ita   | VERB | provare |
+
+⚠️ OF course, this is an approximate process because a POS tagger just provides a string for the identified lemma. So, in case of word forms having the same language, POS and lemma form, but belonging to two different lexical entries, this process would not be able to make a distinction. For instance, it. "pesca" can be:
+
+- NOUN pesca = peach
+- NOUN pesca = fishing
+- VERB pesca = to fish
+
+In this case, which admittedly is rare, we would have these groups:
+
+- words by combining value, language, POS, and lemma:
+  - NOUN pesca, a single entry, for both peach and fishing;
+  - VERB pesca.
+- lemmata by combining language, POS, and lemma: as above.
+
+Yet, this is a corner case and in this context we can tolerate the issues or fix them after the automatic process.
+
+Finally, the lemma's count is the sum of the count of all the words belonging to it. Once lemmata are inserted, their identifiers are updated in the corresponding words.
 
 Their counts index is created as follows:
 
@@ -51,15 +94,15 @@ Of course, once you have the index in the database, you can directly access data
 
 ```sql
 select w.pos, count(w.id) as c, sum(w.count) as f
-from word w 
-group by w.pos 
+from word w
+group by w.pos
 order by w.pos;
 ```
 
 provides the distribution of words into POS categories, with their lexical frequency (`c`) and textual frequency (`f`), e.g.:
 
 | pos   | c     | f      |
-|-------|-------|--------|
+| ----- | ----- | ------ |
 | ADJ   | 9596  | 114159 |
 | ADP   | 175   | 157239 |
 | ADV   | 1127  | 64056  |
@@ -76,8 +119,8 @@ Or, this variation:
 
 ```sql
 select length(w.value), count(w.id) as c, sum(w.count) as f
-from word w 
-group by length(w.value) 
+from word w
+group by length(w.value)
 order by length(w.value);
 ```
 
