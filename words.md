@@ -9,11 +9,66 @@ nav_order: 5
 
 Optionally, the database can include a superset of calculated data essentially related to word forms and their base form (lemma). The word index is built on top of spans data (see [storage](storage) for more details).
 
-Spans are used as the base for building a list of **words**, representing all the unique combinations of each token's language, value, part of speech, and lemma. Each word also has its pre-calculated total count of the corresponding tokens.
+Spans are used as the base for building a list of **words**, representing all the unique _combinations_ of the following token span's properties:
+
+- language;
+- value;
+- part of speech;
+- lemma.
+
+Each word also has its pre-calculated total count of the corresponding tokens. So, a word is defined as the set of token-spans having the same language, value, POS, and lemma.
+
+The procedure for creating the words list is:
+
+1. count the total pages of token spans to fetch;
+2. fetch each token spans page, where spans are grouped by language, value, POS, and lemma;
+3. for each word, add it to the `word`s table (in batches for better performance);
+4. finally, assign value to the `word_id` FK of each token-span which was grouped into a word.
 
 Provided that your indexer uses some kind of lemmatizer, words are the base for building an approximate list of **lemmata**, representing all the word forms belonging to the same base form (lemma). Each lemma also has its pre-calculated total count of word forms.
 
+So, a lemma is defined as the set of words having the same language, POS and lemma. The procedure for building lemmata list is:
+
+1. count the total pages of words to fetch;
+2. fetch each word page, where words are grouped by language, POS, and lemma (excluding words having a NULL lemma);
+3. for each lemma, add it to the lemmata table (in batches for better performance); the lemma count is equal to the sum of all its words counts;
+4. finally, assign FK lemma_id to each word which was grouped into a lemma, and to each span having a word_id FK and belonging to the same lemma.
+
 Both words and lemmata have a pre-calculated detailed distribution across documents, as grouped by each of the document's attribute's unique name=value pair.
+
+## Schema
+
+The database schema for the words index contains these tables:
+
+- `word`:
+  - `id` PK
+  - `lemma_id` FK
+  - `value`
+  - `reversed_value`
+  - `language`
+  - `pos`
+  - `lemma`
+  - `count`
+- `lemma`:
+  - `id` PK
+  - `value`
+  - `reversed_value`
+  - `language`
+  - `pos`
+  - `count`
+- `word_count`:
+  - `id` PK
+  - `word_id` FK
+  - `lemma_id` FK
+  - `doc_attr_name`
+  - `doc_attr_value`
+  - `count`
+- `lemma_count`:
+  - `id` PK
+  - `lemma_id` FK
+  - `doc_attr_name`
+  - `doc_attr_value`
+  - `count`
 
 ## Usage Story
 
@@ -31,15 +86,15 @@ For instance, in a literary corpus one might pick attribute `genre` to see the d
 
 ## Creation Process
 
-The word and lemma index is created as follows:
+In more detail, the word and lemma index is created as follows:
 
 1. first, the index is cleared, because it needs to be globally computed on the whole dataset.
 
-2. words are inserted grouping tokens by language, value, POS, and lemma. This means that we define as the same word form all the tokens having these properties equal. The word's count is the count of all the tokens belonging to it. Once words are inserted, their identifiers are updated in the corresponding spans.
+2. words are inserted grouping tokens by language, value, POS, and lemma. This means that we define as the same word form all the tokens having these properties equal. The word's count is the count of all the tokens grouped under it. Once words are inserted, their identifiers are updated in the corresponding spans.
 
-3. lemmata are inserted grouping tokens by language, POS, and lemma, provided that there is one. The lemma has been assigned to tokens by a POS tagger. Thus each unique combination of language, POS and lemma in a token is a lemma. This is different from word forms (here "words"), where also value is added to the combination. So, it. "prova" is a word, and it. "prove" is a different word, even if both are inflected forms (singular and plural) of the same lemma.
+3. lemmata are inserted grouping words by language, POS, and lemma, provided that there is one. It is assumed that the lemma has been assigned to tokens by a POS tagger. Thus, the set of words having the same language, POS and lemma belong to the same lemma. This is different from word forms (here "words"), where also value is added to the combination. So, it. "prova" is a word, and it. "prove" is a different word, even if both are inflected forms (singular and plural) of the same lemma.
 
-So, for instance, consider these token spans (spans also include linguistic structures larger than a single token, but of course we exclude them from this index):
+For instance, consider these token-spans (spans also include linguistic structures larger than a single token, but of course we exclude them from this index):
 
 | ID  | token value in context | lang. | POS  | lemma   |
 | --- | ---------------------- | ----- | ---- | ------- |
@@ -71,7 +126,7 @@ The corresponding _lemmata_ (combining language, POS, lemma) are:
 - NOUN pesca = fishing
 - VERB pesca = to fish
 
-In this case, which admittedly is rare, we would have these groups:
+In this case, which admittedly is very rare, we would have these groups:
 
 - words by combining value, language, POS, and lemma:
   - NOUN pesca, a single entry, for both peach and fishing;
@@ -82,7 +137,7 @@ Yet, this is a corner case and in this context we can tolerate the issues or fix
 
 Finally, the lemma's count is the sum of the count of all the words belonging to it. Once lemmata are inserted, their identifiers are updated in the corresponding words.
 
-Their counts index is created as follows:
+Their **counts** index is created as follows:
 
 1. a list of all the combinations of name=value pairs in document attributes (both privileged and non privileged) is calculated from the database. Those attributes marked as numeric are grouped into bins corresponding to the ranges calculated from their minium and maximum values, split in a preset number of classes.
 
@@ -90,7 +145,7 @@ Their counts index is created as follows:
 
 3. the lemmata counts are just the sum of the words counts for each lemma.
 
-Of course, once you have the index in the database, you can directly access data at will, or export them for third-party analysis. For instance, this simple query:
+Once you have the index in the database, you can directly access data at will, or export them for third-party analysis. For instance, this simple query:
 
 ```sql
 select w.pos, count(w.id) as c, sum(w.count) as f
