@@ -5,6 +5,9 @@ parent: SQL Translation
 nav_order: 1
 ---
 
+- [ANTLR](#antlr)
+  - [Setup](#setup)
+
 # ANTLR
 
 Search queries are built by an [ANTLR](https://www.antlr.org) language defined in `pythia.g4` grammar. VSCode has a nice extension for ANTLR syntax support: `ANTLR4 grammar syntax support`.

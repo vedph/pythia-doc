@@ -5,6 +5,10 @@ parent: Home
 nav_order: 8
 ---
 
+- [Deployment](#deployment)
+  - [Pythia](#pythia)
+  - [Database](#database)
+
 # Deployment
 
 The Pythia API and its sample frontend UI are distributed in Docker images. So, all what you need to deploy a Pythia API service and optionally its UI is just downloading and customizing a `docker-compose.yml` script.
