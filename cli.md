@@ -17,6 +17,7 @@ nav_order: 7
   - [Bulk Write Command](#bulk-write-command)
   - [Cache Tokens Command](#cache-tokens-command)
   - [Check Metadata Files Command](#check-metadata-files-command)
+  - [Check Word Index Command](#check-word-index-command)
   - [Create Database Command](#create-database-command)
   - [Dump Document Pairs Command](#dump-document-pairs-command)
   - [Dump Text Spans Command](#dump-text-spans-command)
@@ -54,7 +55,7 @@ This allows reusing a unique code base (and thus its already compiled binaries) 
 🎯 Add profile(s) from JSON files to the Pythia database with the specified name.
 
 ```sh
-./pythia add-profiles <INPUT_FILES_MASK> [-d <DB_NAME>] [-i <CSV_IDS>] [-p]
+./pythia add-profiles INPUT_FILES_MASK [-d DB_NAME] [-i CSV_IDS] [-p]
 ```
 
 - `INPUT_FILES_MASK`: the input file(s) mask for the profile files to be added.
@@ -77,7 +78,7 @@ This allows reusing a unique code base (and thus its already compiled binaries) 
 🎯 Build words index from tokens.
 
 ```sh
-./pythia index-w [-d <DB_NAME>] [-c <COUNTS>] [-x <ATTR>] [-n <ATTR>] [-p <POS>] [--n-email <EMAIL>] [--n-span <SPAN>] [--n-limit <LIMIT>] [--n-start]
+./pythia index-w [-d DB_NAME] [-c COUNTS] [-x ATTR] [-n ATTR] [-p POS] [--n-email EMAIL] [--n-span SPAN] [--n-limit LIMIT] [--n-start]
 ```
 
 - `-c COUNTS`: the class counts for document attribute bins (name=N, multiple). If you want integer only bins, prefix the name with `^`.
@@ -103,7 +104,7 @@ Example:
 🎯 Import bulk tables data from the database as exported with the [bulk write command](#bulk-write-command).
 
 ```sh
-./pythia bulk-read <INPUT_DIR>
+./pythia bulk-read INPUT_DIR
 ```
 
 Example:
@@ -117,7 +118,7 @@ Example:
 🎯 Export bulk tables data from the database, to be later used when restoring it via the API startup services or the [bulk read command](#bulk-read-command).
 
 ```sh
-./pythia bulk-write <OUTPUT_DIR> [-d <DB_NAME>]
+./pythia bulk-write OUTPUT_DIR [-d DB_NAME]
 ```
 
 - `OUTPUT_DIR` is the target directory.
@@ -155,7 +156,7 @@ Note that in Windows hosts you would need to quote a path including colons (e.g.
 🎯 Cache the tokens got from tokenizing the texts from the specified source. This is a legacy command used to apply processing like POS tagging outside the Pythia environment.
 
 ```sh
-./pythia cache-tokens <SOURCE> <OUTPUT_DIR> <PROFILE_PATH> <PROFILE_ID> [-d <DB_NAME>] [-t <PLUGIN_TAG>]
+./pythia cache-tokens SOURCE OUTPUT_DIR PROFILE_PATH PROFILE_ID [-d DB_NAME] [-t PLUGIN_TAG]
 ```
 
 - `SOURCE`: the documents source.
@@ -170,19 +171,37 @@ Note that in Windows hosts you would need to quote a path including colons (e.g.
 🎯 Check that each source file for indexing has its corresponding metadata file. For each file in the input mask, it builds the corresponding companion metadata file name by replacing a pattern with a text, and checks whether the resulting path corresponds to an existing file. It is recommended to perform this check before indexing when you are using metadata attribute parsers which rely on companion files, so to ensure your indexing process won't stop when a metadata file is missing.
 
 ```sh
-./pythia check-meta <INPUT_FILE_MASK> [-f REGEX_TO_FIND] [-r TEXT_TO_REPLACE]
+./pythia check-meta INPUT_FILE_MASK [-f REGEX_TO_FIND] [-r TEXT_TO_REPLACE]
 ```
 
 - `INPUT_FILE_MASK`: the input file(s) mask.
 - `-f`: the regular expression pattern to find in each input file path name.
 - `-r`: the text to replace for each match found.
 
+## Check Word Index Command
+
+🎯 Check the tokens in an Italian spans index to detect potential errors and artifacts.
+
+```sh
+./pythia check-ita-words LOOKUP_INDEX_PATH [-o OUTPUT_PATH] [-d DB_NAME]
+```
+
+- `LOOKUP_INDEX_PATH`: the path to the lookup index file (a LiteDB database file).
+- `OUTPUT_PATH`: the output CSV file path.
+- `-d DB_NAME`: the database name (default=`pythia`).
+
+Example:
+
+```sh
+./pythia check-ita-words c:/users/dfusi/desktop/morphit/morph-it_048.bin
+```
+
 ## Create Database Command
 
 🎯 Create or clear a Pythia database.
 
 ```sh
-./pythia create-db [-d <DB_NAME>] [-c]
+./pythia create-db [-d DB_NAME] [-c]
 ```
 
 - `-d DB_NAME`: the database name (default=`pythia`).
