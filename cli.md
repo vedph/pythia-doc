@@ -212,7 +212,7 @@ Example:
 🎯 Dump into a CSV file document name=value pairs for words and lemmata counts. This can be useful when you need to inspect them before creating a word index.
 
 ```sh
-./pythia dump-pairs [-d <DB_NAME>] [-o <OUTPUT_PATH>]
+./pythia dump-pairs [-d DB_NAME] [-o OUTPUT_PATH]
 ```
 
 - `-c COUNTS`: the class counts for document attribute bins (name=N, multiple).
@@ -225,7 +225,7 @@ Example:
 🎯 Dump text spans into console or CSV.
 
 ```sh
-./pythia dump-spans [-d <DB_NAME>] [-o <OUTPUT_PATH>] [-t <TYPE>] [-n <POS>] [-m <POS>] [-i <ID>] [-a <NAME=VALUE>]
+./pythia dump-spans [-d DB_NAME] [-o OUTPUT_PATH] [-t TYPE] [-n POS] [-m POS] [-i ID] [-a NAME=VALUE]
 ```
 
 - `-d DB_NAME`: the database name (default=`pythia`).
@@ -247,7 +247,7 @@ Example:
 🎯 Generate and dump the document's text map for the specified document.
 
 ```sh
-./pythia dump-map <SOURCE> <PROFILE_ID> <OUTPUT_PATH> [-d <DB_NAME>] [-t <PLUGIN_TAG>]
+./pythia dump-map SOURCE PROFILE_ID OUTPUT_PATH [-d DB_NAME] [-t PLUGIN_TAG]
 ```
 
 - `SOURCE`: the documents source.
@@ -286,7 +286,7 @@ To: ... geogName>Ionios</geogName> esse\r\nsed <quote><geogName>Hionios</geogNam
 🎯 Export the results of a search into CSV.
 
 ```sh
-./pythia export-search [-d <DB_NAME>] [-q <QUERY>] [-o <OUTPUT_DIR>] [-p <PAGE_SIZE>] [-f <FIRST_PAGE>] [-l <LAST_PAGE>] [-m <MAX_ROWS>] [-c <CONTEXT_SIZE>]
+./pythia export-search [-d DB_NAME] [-q QUERY] [-o OUTPUT_DIR] [-p PAGE_SIZE] [-f FIRST_PAGE] [-l LAST_PAGE] [-m MAX_ROWS] [-c CONTEXT_SIZE]
 ```
 
 - `-d DB_NAME`: the database name (default=`pythia`).
@@ -305,7 +305,7 @@ To: ... geogName>Ionios</geogName> esse\r\nsed <quote><geogName>Hionios</geogNam
 When dump mode is enabled, the filtered text is dumped to the specified directory for each document indexed. This can be useful for diagnostic purposes, so that you can inspect the text being input to the indexing process proper.
 
 ```sh
-./pythia index <PROFILE_ID> <SOURCE> [-d <DB_NAME>] [-c <TS>] [-o] [-p] [-t <PLUGIN_TAG>] [-u <DUMP_MODE>] [-r <DUMP_DIR>] [--n-email <EMAIL>] [--n-span <SPAN>] [--n-limit <LIMIT>] [--n-start]
+./pythia index PROFILE_ID SOURCE [-d DB_NAME] [-c TS] [-o] [-p] [-t PLUGIN_TAG] [-u DUMP_MODE] [-r DUMP_DIR] [--n-email EMAIL] [--n-span SPAN] [--n-limit LIMIT] [--n-start]
 ```
 
 - `PROFILE_ID`: the ID of the profile to use for the source documents.
@@ -329,7 +329,7 @@ When dump mode is enabled, the filtered text is dumped to the specified director
 🎯 Interactively execute queries against the Pythia database. This command has no arguments, as it starts an interactive text-based session with the user, where each typed query produces the corresponding SQL query code which is then executed.
 
 ```sh
-./pythia query [-d <DB_NAME>]
+./pythia query [-d DB_NAME]
 ```
 
 - `-d DB_NAME`: the database name (default=`pythia`).
