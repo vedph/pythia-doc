@@ -183,12 +183,13 @@ Note that in Windows hosts you would need to quote a path including colons (e.g.
 🎯 Check the tokens in an Italian spans index to detect potential errors and artifacts.
 
 ```sh
-./pythia check-ita-words LOOKUP_INDEX_PATH [-o OUTPUT_PATH] [-d DB_NAME]
+./pythia check-ita-words LOOKUP_INDEX_PATH [-o OUTPUT_PATH] [-d DB_NAME] [-c CONTEXT_SIZE]
 ```
 
 - `LOOKUP_INDEX_PATH`: the path to the lookup index file (a LiteDB database file).
 - `OUTPUT_PATH`: the output CSV file path.
 - `-d DB_NAME`: the database name (default=`pythia`).
+- `-c CONTEXT_SIZE`: The size of the context to retrieve for each result (0=none, default=5).
 
 Example:
 
