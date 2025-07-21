@@ -186,7 +186,7 @@ At the bottom of the configuration you find the components related to text _read
               }
             ],
             "ValueTrimming": true,
-            "TokenTargetName": "address"
+            "TokenTargetName": "date"
           },
           {
             "Name": "email",
