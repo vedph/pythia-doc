@@ -227,7 +227,7 @@ As a sample, consider this query (whitespaces are irrelevant; see below for the 
 
 ```txt
 @@neoteroi rhetoric;
-@[author="Catullus"] AND ([date_value>="0"] OR [category="poetry"]);
+@[author="Catullus"] AND ([date_value<="0"] OR [category="poetry"]);
 [value="hionios"] OR ([value="sic"] BEFORE(m=0,s=l) [value="mater"] BEFORE(m=0,s=l) [value="sic"])
 ```
 
