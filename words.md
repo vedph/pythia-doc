@@ -126,7 +126,7 @@ The corresponding _lemmata_ (combining language, POS, lemma) are:
 | prova (from 1+2+3) | ita   | NOUN | prova   |
 | provare (from 4+5) | ita   | VERB | provare |
 
-⚠️ OF course, this is an approximate process because a POS tagger just provides a string for the identified lemma. So, in case of word forms having the same language, POS and lemma form, but belonging to two different lexical entries, this process would not be able to make a distinction. For instance, it. "pesca" can be:
+⚠️ Of course, this is an approximate process because a POS tagger just provides a string for the identified lemma. So, in case of word forms having the same language, POS and lemma form, but belonging to two different lexical entries, this process would not be able to make a distinction. For instance, it. "pesca" can be:
 
 - NOUN pesca = peach
 - NOUN pesca = fishing
