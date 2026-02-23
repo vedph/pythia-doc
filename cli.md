@@ -287,11 +287,12 @@ To: ... geogName>Ionios</geogName> esse\r\nsed <quote><geogName>Hionios</geogNam
 🎯 Export the results of a search into CSV.
 
 ```sh
-./pythia export-search [-d DB_NAME] [-q QUERY] [-o OUTPUT_DIR] [-p PAGE_SIZE] [-f FIRST_PAGE] [-l LAST_PAGE] [-m MAX_ROWS] [-c CONTEXT_SIZE]
+./pythia export-search [-d DB_NAME] [-q QUERY] [-s QUERY_SOURCE_PATH] [-o OUTPUT_DIR] [-p PAGE_SIZE] [-f FIRST_PAGE] [-l LAST_PAGE] [-m MAX_ROWS] [-c CONTEXT_SIZE]
 ```
 
 - `-d DB_NAME`: the database name (default=`pythia`).
 - `-q QUERY`: the search query. If not specified it will be prompted. If you just type a word, the query syntax will be completed like `[value="word"]`.
+- `-s QUERY_SOURCE_PATH`: a path to a text file containing 1 or more queries, each counting 1 or more lines, terminated by a blank line. When this is specified, it supercedes `-q`.
 - `-o OUTPUT_DIR`: the output directory (default=desktop).
 - `-p PAGE_SIZE`: the default virtual page size (default=100).
 - `-f FIRST_PAGE`: the number of the first page to export (default=1).
