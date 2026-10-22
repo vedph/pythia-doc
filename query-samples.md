@@ -211,18 +211,24 @@ Note that in this example the `len` attribute refers to the word's values as fil
 - `[$name="l"]` or `[$l]`: find all the structures having name `l` (line): 12 results.
 - `[$name="snt"]` or `[$snt]`: find all the structures having name `snt` (sentence): 4 results, including the title ("ad Arrium").
 - `[$name="div"]` or `[$div]`: find all the structures having name `div` (here corresponding to a single poem): 1 result.
+- `[$name^="l"]`: find all the structures whose name starts with `l`, i.e. both lines (`l`) and line groups (`lg`).
+- `[$l="5"]`: find all the structures having an attribute `l` equal to `5`: here, this is the line numbered 5, as defined by `l=//l @n$` in the structure parser.
+- `[$l] AND [$value*="mater"]`: find all the lines whose value contains `mater`.
 
 ## Multiple Pairs
 
 - OR: `[value="chommoda"] OR [value="commoda"]` (this is better accomplished by using a single pair with a regular expression).
 - AND: `[value="ionios"] AND [gn]` (geographic name): find the word Ionios when it's a toponym. Here we are matching against an attribute `gn` representing the geographic name, and derived from the TEI `geogName` element in the input document. 2 results: `ionios`, `ionios`.
-- AND NOT: `[value="ionios"] AND NOT [gn]`
+- AND NOT: `[value="ionios"] AND NOT [gn]`: find the word Ionios when it is not a toponym.
+- precedence: `[value="sic"] OR [value="et"] AND [pos="CCONJ"]` is equivalent to `[value="sic"] OR ([value="et"] AND [pos="CCONJ"])`, as `AND` binds tighter than `OR`.
 
 ## Collocations
 
 - **NEAR**: `[value="sic"] NEAR(m=0,s=l) [value="mater"]`: `sic` at either side of `mater`, with a maximum distance of 0, when both tokens are inside the same structure named `l` (verse). 2 results: `sic`, `sic`.
 - **NOT NEAR**: `[value="sic"] NOT NEAR(m=0) [value="mater"]`: find the word `sic` not immediately before/after the word `mater`. 1 result: `sic` at verse 6.
+- **NOT NEAR with structure**: `[value="sic"] NOT NEAR(m=3,s=l) [value="mater"]`: find the word `sic` when there is no `mater` within 3 tokens from it in the same verse.
 - **BEFORE**: `[value="sic"] BEFORE(m=0,s=l) [value="mater"]`: find the word `sic` at the left side of `mater`, with a maximum distance of 0, when both tokens are inside the same structure named `l` (verse). 1 result: `sic`. Combinations are possible, e.g. `[value="sic"] BEFORE(m=0) ([value="mater"] OR [value="liber"])` finds `sic` immediately before `mater` or `liber`.
+- **chains**: `[value="sic"] BEFORE(m=0) [value="mater"] BEFORE(m=0) [value="sic"]`: find the word `sic` immediately before `mater`, which in turn is immediately before `sic` (location operators are right-associative). 1 result: the first `sic` in `sic mater, sic`. To add more conditions to the same span, use parentheses: `([value="sic"] BEFORE(m=0) [value="mater"]) AFTER(m=5) [value="credo"]` finds the same `sic`, as it also follows `credo`.
 - **NOT BEFORE**: `[value="sic"] NOT BEFORE(m=0) [value="mater"]`: find the word `sic` when it is not immediately followed by `mater`. 2 results: `sic` (all the 3 `sic` words in the sample text, except for the one before `mater`).
 - **AFTER**: `[value="sic"] AFTER(m=0,s=l) [value="mater"]`: find the word `sic` immediately following (minimum distance=0) the word `mater`, only when both tokens are inside the same structure named `l` (verse). 1 result: `sic`.
 - **NOT AFTER**: `[value="sic"] NOT AFTER(m=0) [value="mater"]`. 2 results.
@@ -234,15 +240,16 @@ Note that in this example the `len` attribute refers to the word's values as fil
 
 ## Scopes
 
-- **corpus**: `@@[neoteroi rhetoric][value="chommoda"]`: find the word `chommoda` only in the documents belonging to any of the corpora named `neoteoroi` and `rhetoric` (assume that the sample document belongs to the former). 1 result: `chommoda`.
-- **document**: `@[author="Catullus" AND (date_value>="0" OR category="poetry")][value="chommoda"]`: find the word `chommoda` only in those documents having as author `Catullus` and being either dated A.D. or included in the poetry category. Here `author`, `date_value`, and `category` are all document attributes. 1 result: `chommoda`.
-- **corpus and document**: `@@[neoteroi rhetoric]@[author="Catullus" AND (date_value>="0" OR category="poetry")][value="chommoda"]`: find the word `chommoda` only in the documents belonging to any of the corpora named `neoteoroi` and `rhetoric` (assume that the sample document belongs to the former), only in those documents having as author `Catullus` and being either dated A.D. or included in the poetry category. 1 result: `chommoda`.
+- **corpus**: `@@neoteroi rhetoric;[value="chommoda"]`: find the word `chommoda` only in the documents belonging to any of the corpora named `neoteroi` and `rhetoric` (assume that the sample document belongs to the former). 1 result: `chommoda`.
+- **document**: `@[author="Catullus"] AND ([date_value>="0"] OR [category="poetry"]);[value="chommoda"]`: find the word `chommoda` only in those documents having as author `Catullus` and being either dated A.D. or included in the poetry category. Here `author`, `date_value`, and `category` are all document attributes. 1 result: `chommoda`.
+- **document by ID**: `@[id=="1"];[value="chommoda"]`: find the word `chommoda` only in the document with ID 1.
+- **corpus and document**: `@@neoteroi rhetoric;@[author="Catullus"] AND ([date_value>="0"] OR [category="poetry"]);[value="chommoda"]`: find the word `chommoda` only in the documents belonging to any of the corpora named `neoteroi` and `rhetoric` (assume that the sample document belongs to the former), only in those documents having as author `Catullus` and being either dated A.D. or included in the poetry category. 1 result: `chommoda`.
 
 ## Ghost Structures in Search
 
 This sample refers to ghost structures, i.e. those structures defined only for the purpose of decorating the tokens they include with some attributes.
 
-For instance, to find all the foreign Latin words in an Italian corpus one could write a pair like `[frgn=lat]`. This implies a structure parser defined in the profile like this:
+For instance, to find all the foreign Latin words in an Italian corpus one could write a pair like `[frgn="lat"]`. This implies a structure parser defined in the profile like this:
 
 ```json
 "StructureParsers": [
